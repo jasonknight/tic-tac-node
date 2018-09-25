@@ -210,12 +210,12 @@ Game.aiPlay = function (board) {
 		if ( col_sqs.length > dia_sqs.length ) {
 			direction = 1;	
 		} else {
-			direction = -1;	
+			direction = 2;	
 		}
 	}
 	if ( dia_sqs.length > row_sqs.length ) {
 		if ( dia_sqs.length > col_sqs.length ) {
-			direction = -1;
+			direction = 2;
 		} else {
 			direction = 1;
 		}

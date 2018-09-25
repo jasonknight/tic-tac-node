@@ -140,5 +140,36 @@ describe('Game', function () {
 				assert.ok(sqs.length == size -1)
 			}	
 		});
+		it('should stick to a col',function() {
+			var size = 4;
+			for ( var x = 0; x < size; x++ ) {
+				var board = Game.createBoard(size);
+				for ( var y = 0; y < size - 2; y++ ) {
+					board = Game.play(board,Game.P2,y,x);
+				}
+				board = Game.aiPlay(board);
+				Game.display(board);
+				var sqs = Game.getColByPlayer(board,Game.P2,x);
+				assert.ok(sqs.length == size -1)
+			}	
+		});
+		it('should stick to a diag', function() {
+			var size = 4;
+			for ( var i = -1; i < 1; i++ ) {
+				var x = 0;
+				var board = Game.createBoard(size);
+				if ( i == -1 ) { x = board.length - 1; }
+				for ( var y = 0; y < size - 2; y++ ) {
+					board = Game.play(board,Game.P2,y,x);	
+					if ( i == -1 ) { x--; } else { x++; }
+				}
+				Game.display(board);
+				board = Game.aiPlay(board);
+				Game.display(board);
+				var sqs = Game.getDiagByPlayer(board,Game.P2,i);
+				assert.ok(sqs.length == size -1)
+
+			}	
+		});
 	});
 });
