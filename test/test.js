@@ -127,5 +127,18 @@ describe('Game', function () {
 				Game.display(board);
 			}		
 		});	
+		it('should stick to a row',function() {
+			var size = 4;
+			for ( var y = 0; y < size; y++ ) {
+				var board = Game.createBoard(size);
+				for ( var x = 0; x < size - 2; x++ ) {
+					board = Game.play(board,Game.P2,y,x);
+				}
+				board = Game.aiPlay(board);
+				Game.display(board);
+				var sqs = Game.getRowByPlayer(board,Game.P2,y);
+				assert.ok(sqs.length == size -1)
+			}	
+		});
 	});
 });
