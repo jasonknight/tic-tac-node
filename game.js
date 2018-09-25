@@ -98,7 +98,49 @@ Game.isWon = function(board) {
 	}
 	return false;
 }
-
+Game.display = function (board) {
+	function puts(ln) {
+		process.stdout.write(ln);
+	}
+	for ( var y = 0; y < board.length; y++ ) {
+		puts(board[y].map(function (s) { 
+			return s.display; 
+		}).join("|") + "\n");
+	}
+	puts("\n");
+}
+Game.aiBlockRow = function (board,y) {
+	for ( var x = 0; x < board.length; x++ ) {
+		if ( board[y][x].owner == Game.UNOWNED ) {
+			return Game.play(board,Game.P2,y,x);
+		}
+	}	
+	return board;
+}
+Game.aiBlockCol = function (board,x) {
+	for ( var y = 0; y < board.length; y++ ) {
+		if ( board[y][x].owner == Game.UNOWNED ) {
+			return Game.play(board,Game.P2,y,x);
+		}
+	}	
+	return board;
+}
+Game.aiPlay = function (board) {
+	// First we need to block
+	for ( var y = 0; y < board.length; y++ ) {
+		var sqs = Game.getRowByPlayer(board,Game.P1,y);
+		if ( sqs.length == board.length - 1 ) {
+			return Game.aiBlockRow(board,y);
+		}
+	}
+	for ( var x = 0; x < board.length; x++ ) {
+		var sqs = Game.getColByPlayer(board,Game.P1,x);
+		if ( sqs.length == board.length - 1 ) {
+			return Game.aiBlockCol(board,x);
+		}
+	}
+	return board;
+}
 for ( var k in Game ) {
 	exports[k] = Game[k];
 }

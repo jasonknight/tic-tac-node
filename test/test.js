@@ -50,6 +50,7 @@ describe('Game', function () {
 				for ( var x = 0; x < size; x++ ) {
 					board = Game.play(board,Game.P1,y,x);
 				}
+				Game.display(board);
 				assert.equal(Game.isWon(board),true);
 			}
 		});	
@@ -60,6 +61,7 @@ describe('Game', function () {
 				for ( var y = 0; y < size; y++ ) {
 					board = Game.play(board,Game.P1,y,x);
 				}
+				Game.display(board);
 				assert.equal(Game.isWon(board),true);
 			}
 		});
@@ -73,8 +75,41 @@ describe('Game', function () {
 					board = Game.play(board,Game.P1,y,x);
 					if ( dir == -1 ) { x--; } else { x++; }
 				}
+				Game.display(board);
 				assert.equal(Game.isWon(board),true);
 			}
 		});
+	});
+	describe('generic ai',function () {
+		it('should block winning rows',function() {
+			var size = 3;
+			for ( var y = 0; y < size; y++) {
+				var board = Game.createBoard(size);
+				for ( var x = 0; x < size - 1; x++ ) {
+					board = Game.play(board,Game.P1,y,x);
+				}
+				board = Game.aiPlay(board)
+				var sqs = Game.getRowByPlayer(board,Game.P2,y);
+				assert.equal(sqs.length,1);
+				Game.display(board);
+				sqs = Game.getRowByPlayer(board,Game.P1,y);
+				assert.equal(sqs.length,size-1);
+			}		
+		});
+		it('should block winning cols',function() {
+			var size = 3;
+			for ( var x = 0; x < size; x++) {
+				var board = Game.createBoard(size);
+				for ( var y = 0; y < size - 1; y++ ) {
+					board = Game.play(board,Game.P1,y,x);
+				}
+				board = Game.aiPlay(board)
+				var sqs = Game.getColByPlayer(board,Game.P2,x);
+				Game.display(board);
+				assert.equal(sqs.length,1);
+				sqs = Game.getColByPlayer(board,Game.P1,x);
+				assert.equal(sqs.length,size-1);
+			}		
+		});	
 	});
 });
