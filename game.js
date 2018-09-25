@@ -125,6 +125,17 @@ Game.aiBlockCol = function (board,x) {
 	}	
 	return board;
 }
+Game.aiBlockDiag = function (board,i) {
+	var x = 0;
+	if ( i == -1 ) { x = board.length - 1; }
+	for ( var y = 0; y < board.length; y++ ) {
+		if ( board[y][x].owner == Game.UNOWNED ) {
+			return Game.play(board,Game.P2,y,x);
+		}
+		if ( i == -1 ) { x--; } else { x++; }
+	}
+	return board;
+}
 Game.aiPlay = function (board) {
 	// First we need to block
 	for ( var y = 0; y < board.length; y++ ) {
@@ -137,6 +148,12 @@ Game.aiPlay = function (board) {
 		var sqs = Game.getColByPlayer(board,Game.P1,x);
 		if ( sqs.length == board.length - 1 ) {
 			return Game.aiBlockCol(board,x);
+		}
+	}
+	for ( var i = -1; i < 1; i++ ) {
+		var sqs = Game.getDiagByPlayer(board,Game.P1,i);
+		if ( sqs.length == board.length - 1 ) {
+			return Game.aiBlockDiag(board,i);
 		}
 	}
 	return board;

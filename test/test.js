@@ -110,6 +110,22 @@ describe('Game', function () {
 				sqs = Game.getColByPlayer(board,Game.P1,x);
 				assert.equal(sqs.length,size-1);
 			}		
+		});
+		it('should block winning diag',function() {
+			var size = 3;
+			for ( var i = -1; i < 1; i++ ) {
+				var board = Game.createBoard(size);
+				var x = 0;
+				if ( i == -1 ) { x = board.length - 1; }
+				for ( var y = 0; y < board.length-1; y++ ) {
+					board = Game.play(board,Game.P1,y,x);	
+					if ( i == -1 ) { x--; } else { x++; }
+				}
+				board = Game.aiPlay(board);
+				var sqs = Game.getDiagByPlayer(board,Game.P2,i);
+				assert.equal(sqs.length,1);
+				Game.display(board);
+			}		
 		});	
 	});
 });
